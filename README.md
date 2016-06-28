@@ -8,7 +8,7 @@ Mirror an ELPA archive into a directory.
 
 ## Prerequisites
 
-  - Emacs 24
+  - Emacs 24.4 or later
   - cl-lib
 
 ## Installation
