@@ -27,6 +27,8 @@
 
 ;;; Commentary:
 
+;; [![Build Status](https://travis-ci.org/dochang/elpa-clone.svg?branch=master)](https://travis-ci.org/dochang/elpa-clone)
+;;
 ;; Mirror an ELPA archive into a directory.
 
 ;; Prerequisites:
