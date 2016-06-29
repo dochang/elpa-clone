@@ -62,17 +62,10 @@
 ;;; Code:
 
 (require 'url)
+(require 'url-http)
 (require 'package)
 (require 'cl-lib)
 
-
-(defun elpa-clone--resolve-to (path base)
-  (if (or (url-p base)
-          (string-match-p "\\`https?:" base))
-      (format "%s/%s" base path)
-    (expand-file-name path
-                      (if (file-name-absolute-p base)
-                          base (expand-file-name base)))))
 
 (defun elpa-clone--read-archive-contents (buffer)
   (let ((contents (read buffer)))
@@ -90,28 +83,99 @@
     (concat (package-desc-full-name pkg-desc)
             (package-desc-suffix pkg-desc))))
 
-(defun elpa-clone--downloader (upstream downstream)
+(defun elpa-clone--cleaner (downstream)
   (lambda (filename)
-    (let ((source (elpa-clone--resolve-to filename upstream))
+    (let* ((sig-filename (concat filename ".sig"))
+           (sig-pathname (expand-file-name sig-filename downstream)))
+      (when (file-exists-p sig-pathname)
+        (delete-file sig-pathname)))
+    (delete-file (expand-file-name filename downstream))))
+
+(defun elpa-clone--downloader (upstream downstream signaturep
+                               upstream-join upstream-copy-file)
+  (lambda (filename)
+    (let ((source (funcall upstream-join upstream filename))
           (target (expand-file-name filename downstream)))
       (unless (file-exists-p target)
-        (if (string-match-p "\\`https?:" source)
-            (url-copy-file source target)
-          (copy-file source target))))))
+        (when signaturep
+          (let* ((sig-filename (concat filename ".sig"))
+                 (source-sig (funcall upstream-join upstream sig-filename))
+                 (target-sig (expand-file-name sig-filename downstream)))
+            (funcall upstream-copy-file
+                     source-sig target-sig 'ok-if-already-exists)))
+        (funcall upstream-copy-file source target)))))
+
+(defun elpa-clone--internal (upstream downstream signature
+                             upstream-join upstream-copy-file
+                             upstream-insert-file-contents
+                             upstream-file-exists-p)
+  (let* (pkgs signaturep)
+    (with-temp-buffer
+      (let* ((contents-file "archive-contents")
+             (sig-file (concat contents-file ".sig"))
+             (upstream-contents-sig (funcall upstream-join upstream sig-file)))
+        (funcall upstream-insert-file-contents
+                 (funcall upstream-join upstream contents-file))
+        (goto-char (point-min))
+        (setq pkgs (elpa-clone--read-archive-contents (current-buffer)))
+        (when (and (not (eq signature 'never))
+                   (or signature
+                       (funcall upstream-file-exists-p upstream-contents-sig)))
+          (funcall upstream-copy-file
+                   upstream-contents-sig
+                   (expand-file-name sig-file downstream)
+                   'ok-if-already-exists)
+          (setq signaturep t))
+        (write-file (expand-file-name contents-file downstream))))
+    (let* ((upstream-filenames (mapcar 'elpa-clone--package-filename pkgs))
+           (downstream-filenames (directory-files downstream nil
+                                                  "\\.\\(el\\|tar\\)$"))
+           (outdate-filenames (cl-set-difference downstream-filenames
+                                                 upstream-filenames
+                                                 :test 'string=))
+           (new-filenames (cl-set-difference upstream-filenames
+                                             downstream-filenames
+                                             :test 'string=))
+           (downloader (elpa-clone--downloader upstream downstream signaturep
+                                               upstream-join upstream-copy-file))
+           (cleaner (elpa-clone--cleaner downstream)))
+      (mapc cleaner outdate-filenames)
+      (mapc downloader new-filenames))))
+
+(defun elpa-clone--remote (upstream downstream signature)
+  (elpa-clone--internal
+   upstream downstream signature
+   'concat
+   'url-copy-file
+   'url-insert-file-contents
+   'url-http-file-exists-p))
+
+(defun elpa-clone--local (upstream downstream signature)
+  (elpa-clone--internal
+   upstream downstream signature
+   (lambda (upstream filename)
+     (expand-file-name filename upstream))
+   'copy-file
+   'insert-file-contents
+   'file-exists-p))
 
 ;;;###autoload
-(defun elpa-clone (upstream downstream)
+(defun elpa-clone (upstream downstream &optional signature)
   "Clone ELPA archive.
 
-UPSTREAM is an ELPA URL.
-DOWNSTREAM is the download directory."
-  (interactive "sUpstream URL: \nGDownload directory: ")
+UPSTREAM is an ELPA URL or local ELPA directory.
+DOWNSTREAM is the download directory.
+
+When SIGNATURE is nil, download *.sig files only if exists.
+When SIGNATURE is `never', never download *.sig files.
+When SIGNATURE is any other value, always download *.sig files."
+  (interactive "sUpstream URL or DIR: \nGDownload directory: ")
 
   (when (url-p upstream)
     (setq upstream (url-recreate-url upstream)))
 
   (unless upstream
-    (error "Upstream URL must NOT be nil!"))
+    (error "Upstream must NOT be nil!"))
 
   (unless downstream
     (error "Download directory must NOT be nil!"))
@@ -120,31 +184,11 @@ DOWNSTREAM is the download directory."
   (make-directory downstream 'create-parents)
   (setq downstream (file-name-as-directory downstream))
 
-  (let ((upstream-contents (elpa-clone--resolve-to "archive-contents" upstream))
-        (downstream-contents (expand-file-name "archive-contents" downstream))
-        (make-backup-files nil)
+  (let ((make-backup-files nil)
         (version-control 'never))
-    (with-temp-buffer
-      (if (string-match-p "\\`https?:" upstream-contents)
-          (url-insert-file-contents upstream-contents)
-        (insert-file-contents upstream-contents))
-      (goto-char (point-min))
-      (let ((pkgs (elpa-clone--read-archive-contents (current-buffer))))
-        (write-file downstream-contents)
-        (let* ((upstream-filenames (mapcar 'elpa-clone--package-filename pkgs))
-               (downstream-filenames (directory-files downstream nil
-                                                      "\\.\\(el\\|tar\\)$"))
-               (outdate-filenames (cl-set-difference downstream-filenames
-                                                     upstream-filenames
-                                                     :test 'string=))
-               (new-filenames (cl-set-difference upstream-filenames
-                                                 downstream-filenames
-                                                 :test 'string=))
-               (downloader (elpa-clone--downloader upstream downstream))
-               (cleaner (lambda (filename)
-                          (delete-file (expand-file-name filename downstream)))))
-          (mapc cleaner outdate-filenames)
-          (mapc downloader new-filenames))))))
+    (if (string-match-p "\\`https?:" upstream)
+        (elpa-clone--remote upstream downstream signature)
+      (elpa-clone--local upstream downstream signature))))
 
 (provide 'elpa-clone)
 
