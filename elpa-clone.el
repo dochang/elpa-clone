@@ -113,12 +113,23 @@
         (delete-file sig-pathname)))
     (delete-file (expand-file-name filename downstream))))
 
-(defun elpa-clone--downloader (upstream downstream signaturep
-                               upstream-join upstream-copy-file)
+(defun elpa-clone--downloader (upstream downstream signaturep readme
+                               upstream-join upstream-copy-file
+                               upstream-file-exists-p)
   (lambda (filename)
     (let ((source (funcall upstream-join upstream filename))
           (target (expand-file-name filename downstream)))
       (unless (file-exists-p target)
+        (let* ((pkgname (car (elpa-clone--split-filename filename)))
+               (readme-filename (concat pkgname "-readme.txt"))
+               (source-readme (funcall upstream-join upstream readme-filename)))
+          (when (and (not (eq readme 'never))
+                     (or readme
+                         (funcall upstream-file-exists-p source-readme)))
+            (funcall upstream-copy-file
+                     source-readme
+                     (expand-file-name readme-filename downstream)
+                     'ok-if-already-exists)))
         (when signaturep
           (let* ((sig-filename (concat filename ".sig"))
                  (source-sig (funcall upstream-join upstream sig-filename))
@@ -127,7 +138,7 @@
                      source-sig target-sig 'ok-if-already-exists)))
         (funcall upstream-copy-file source target)))))
 
-(defun elpa-clone--internal (upstream downstream signature
+(defun elpa-clone--internal (upstream downstream signature readme
                              upstream-join upstream-copy-file
                              upstream-insert-file-contents
                              upstream-file-exists-p)
@@ -158,23 +169,24 @@
            (new-filenames (cl-set-difference upstream-filenames
                                              downstream-filenames
                                              :test 'string=))
-           (downloader (elpa-clone--downloader upstream downstream signaturep
-                                               upstream-join upstream-copy-file))
+           (downloader (elpa-clone--downloader upstream downstream signaturep readme
+                                               upstream-join upstream-copy-file
+                                               upstream-file-exists-p))
            (cleaner (elpa-clone--cleaner downstream)))
       (mapc cleaner outdate-filenames)
       (mapc downloader new-filenames))))
 
-(defun elpa-clone--remote (upstream downstream signature)
+(defun elpa-clone--remote (upstream downstream signature readme)
   (elpa-clone--internal
-   upstream downstream signature
+   upstream downstream signature readme
    'concat
    'url-copy-file
    'url-insert-file-contents
    'url-http-file-exists-p))
 
-(defun elpa-clone--local (upstream downstream signature)
+(defun elpa-clone--local (upstream downstream signature readme)
   (elpa-clone--internal
-   upstream downstream signature
+   upstream downstream signature readme
    (lambda (upstream filename)
      (expand-file-name filename upstream))
    'copy-file
@@ -182,7 +194,7 @@
    'file-exists-p))
 
 ;;;###autoload
-(defun elpa-clone (upstream downstream &optional signature)
+(defun elpa-clone (upstream downstream &optional signature readme)
   "Clone ELPA archive.
 
 UPSTREAM is an ELPA URL or local ELPA directory.
@@ -190,7 +202,11 @@ DOWNSTREAM is the download directory.
 
 When SIGNATURE is nil, download *.sig files only if exists.
 When SIGNATURE is `never', never download *.sig files.
-When SIGNATURE is any other value, always download *.sig files."
+When SIGNATURE is any other value, always download *.sig files.
+
+When README is nil, download readme files only if exists.
+When README is `never', never download readme files.
+When README is any other value, always download readme files."
   (interactive "sUpstream URL or DIR: \nGDownload directory: ")
 
   (when (url-p upstream)
@@ -209,8 +225,8 @@ When SIGNATURE is any other value, always download *.sig files."
   (let ((make-backup-files nil)
         (version-control 'never))
     (if (string-match-p "\\`https?:" upstream)
-        (elpa-clone--remote upstream downstream signature)
-      (elpa-clone--local upstream downstream signature))))
+        (elpa-clone--remote upstream downstream signature readme)
+      (elpa-clone--local upstream downstream signature readme))))
 
 (provide 'elpa-clone)
 
