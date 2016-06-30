@@ -55,7 +55,8 @@
 
 ;; Note:
 ;;
-;; `elpa-clone' does NOT overwrite existing files.  If a package file is
+;; `elpa-clone' will **NOT** overwrite existing packages but will clean
+;; outdated packages before downloading new packages.  If a package file is
 ;; broken, remove the file and call `elpa-clone' again.
 
 ;; License:
