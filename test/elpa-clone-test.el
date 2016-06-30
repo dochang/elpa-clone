@@ -55,3 +55,13 @@
     (should (f-file? (f-join target "archive-contents.sig")))
     (should-not (f-file? (f-join target "a-1.el")))
     (should-not (f-file? (f-join target "a-1.el.sig")))))
+
+(ert-deftest test-0006-split-filename ()
+  (should (equal (elpa-clone--split-filename "foo-bar-1.0-git.el")
+                 (list "foo-bar" "1.0-git")))
+  (should (equal (elpa-clone--split-filename "foo-bar-1.0-.el")
+                 (list "foo-bar" "1.0-")))
+  (should (equal (elpa-clone--split-filename "foo-bar.el")
+                 (list "foo-bar")))
+  (should (equal (elpa-clone--split-filename "baz/foo-bar-1.0.el")
+                 (list "foo-bar" "1.0"))))
