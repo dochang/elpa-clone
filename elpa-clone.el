@@ -49,6 +49,9 @@
 ;;     (elpa-clone "http://host/elpa" "/path/to/elpa")
 ;;
 ;; `elpa-clone' can also be invoked via `M-x'.
+;;
+;; You can customize download interval via `elpa-clone-download-interval'.  But
+;; note that the *real* interval is `(max elpa-clone-download-interval 5)'.
 
 ;; Note:
 ;;
@@ -66,6 +69,18 @@
 (require 'package)
 (require 'cl-lib)
 
+
+(defgroup elpa-clone ()
+  "Clone ELPA archive."
+  :prefix "elpa-clone-"
+  :group 'package)
+
+(defcustom elpa-clone-download-interval 5
+  "Interval between downloads, in seconds.
+
+The value may be an integer or floating point."
+  :type 'number
+  :group 'elpa-clone)
 
 (defun elpa-clone--read-archive-contents (buffer)
   (let ((contents (read buffer)))
@@ -117,6 +132,7 @@
                                upstream-join upstream-copy-file
                                upstream-file-exists-p)
   (lambda (filename)
+    (sleep-for (max elpa-clone-download-interval 5))
     (let ((source (funcall upstream-join upstream filename))
           (target (expand-file-name filename downstream)))
       (unless (file-exists-p target)
