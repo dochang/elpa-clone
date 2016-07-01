@@ -10,6 +10,11 @@ env:
     - EVM_EMACS=emacs-24.4-travis
     - EVM_EMACS=emacs-24.5-travis
 
+addons:
+  apt:
+    packages:
+      - curl
+
 before_install:
   - curl -fsSkL https://github.com/rejeep/evm/raw/master/go | bash
   - export PATH="$EVM_DIR/bin:$PATH"
@@ -17,6 +22,8 @@ before_install:
   - evm --skip --use install $EVM_EMACS
   - curl -fsSkL https://github.com/cask/cask/raw/master/go | python
   - export PATH="$CASK_DIR/bin:$PATH"
+
+install:
   - cask install
 
 script:
