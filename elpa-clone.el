@@ -3,7 +3,7 @@
 ;; Copyright (C) 2016 ZHANG Weiyi
 
 ;; Author: ZHANG Weiyi <dochang@gmail.com>
-;; Version: 0.0.1
+;; Version: 0.0.2
 ;; Package-Requires: ((cl-lib "0"))
 ;; Keywords: elpa, clone, mirror
 ;; URL: https://github.com/dochang/elpa-clone
