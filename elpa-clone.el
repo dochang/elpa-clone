@@ -120,7 +120,7 @@ The value may be an integer or floating point."
   (lambda (filename)
     (let* ((pkgname (car (elpa-clone--split-filename filename)))
            (readme-filename (concat pkgname "-readme.txt"))
-           (readme-pathname (expand-file-name readme-pathname downstream)))
+           (readme-pathname (expand-file-name readme-filename downstream)))
       (when (file-exists-p readme-pathname)
         (delete-file readme-pathname)))
     (let* ((sig-filename (concat filename ".sig"))
