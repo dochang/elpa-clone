@@ -5,6 +5,7 @@
 ### Added
 
   - Test for Emacs 25
+  - Installation instruction in source code
 
 ## [0.0.3] - 2016-07-24
 

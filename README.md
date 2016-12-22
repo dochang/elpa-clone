@@ -1,7 +1,7 @@
 # elpa-clone - Clone ELPA archive
 
 *Author:* ZHANG Weiyi <dochang@gmail.com><br>
-*Version:* 0.0.1<br>
+*Version:* 0.0.3<br>
 *URL:* [https://github.com/dochang/elpa-clone](https://github.com/dochang/elpa-clone)<br>
 
 [![Build Status](https://travis-ci.org/dochang/elpa-clone.svg?branch=master)](https://travis-ci.org/dochang/elpa-clone)
