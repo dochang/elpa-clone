@@ -22,3 +22,7 @@ replace = '''
 [[files."elpa-clone.el"]]
 search = '{{old_version}}'
 replace = '{{new_version}}'
+
+[[files."README.md"]]
+search = '{{old_version}}'
+replace = '{{new_version}}'
