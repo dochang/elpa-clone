@@ -6,7 +6,15 @@
 
 [![Build Status](https://travis-ci.org/dochang/elpa-clone.svg?branch=master)](https://travis-ci.org/dochang/elpa-clone)
 
-Mirror an ELPA archive into a directory.
+Mirror an ELPA archive into a directory. Note that GNU ELPA, MELPA and
+MELPA Stable can more efficiently be cloned using `rsync`:
+
+  - mkdir -p /var/elpa-packages/{gnu,melpa,melpa-stable}
+  - /usr/bin/rsync -avz --delete --progress elpa.gnu.org::elpa/ /var/elpa-packages/gnu
+  - /usr/bin/rsync -avz --delete --progress rsync://melpa.org/packages/ /var/elpa-packages/melpa
+  - /usr/bin/rsync -avz --delete --progress rsync://stable.melpa.org/packages/ /var/elpa-packages/melpa-stable
+
+Please prefer `rsync` to this package for cloning those repositories.
 
 ## Prerequisites
 
