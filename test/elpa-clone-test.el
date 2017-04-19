@@ -88,3 +88,8 @@
     (should-not (f-file? (f-join target "a-1.el.sig")))
     (should (f-file? (f-join target "b-2.tar")))
     (should-not (f-file? (f-join target "b-2.tar.sig")))))
+
+(ert-deftest test-0009-select-sync-method ()
+  (should (eq (elpa-clone--select-sync-method "http://localhost:10009/") 'url))
+  (should (eq (elpa-clone--select-sync-method "file:///path/to/") 'url))
+  (should (eq (elpa-clone--select-sync-method "/path/to") 'local)))

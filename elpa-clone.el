@@ -215,6 +215,11 @@ The value may be an integer or floating point."
    'insert-file-contents
    'file-exists-p))
 
+(defun elpa-clone--select-sync-method (upstream)
+  (pcase upstream
+    ((pred (string-match-p "\\`[a-zA-Z][[:alnum:]+.-]*://")) 'url)
+    (_ 'local)))
+
 ;;;###autoload
 (cl-defun elpa-clone (upstream downstream &key sync-method signature readme)
   "Clone ELPA archive.
@@ -255,9 +260,12 @@ When README is any other value, always download readme files."
 
   (let ((make-backup-files nil)
         (version-control 'never))
-    (if (string-match-p "\\`https?:" upstream)
-        (elpa-clone--remote upstream downstream signature readme)
-      (elpa-clone--local upstream downstream signature readme))))
+    (unless sync-method
+      (setq sync-method (elpa-clone--select-sync-method upstream)))
+    (pcase sync-method
+      (`url (elpa-clone--remote upstream downstream signature readme))
+      (`local (elpa-clone--local upstream downstream signature readme))
+      (_ (error "Unknown sync method %s" sync-method)))))
 
 (provide 'elpa-clone)
 
