@@ -81,7 +81,7 @@
   (let* ((fixture-path (f-join fixture-root "0008-signature-never"))
          (source (f-join fixture-path "source"))
          (target (f-join fixture-path "target")))
-    (elpa-clone source target 'never)
+    (elpa-clone source target :signature 'never)
     (should (f-file? (f-join target "archive-contents")))
     (should-not (f-file? (f-join target "archive-contents.sig")))
     (should (f-file? (f-join target "a-1.el")))

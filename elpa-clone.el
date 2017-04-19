@@ -216,11 +216,20 @@ The value may be an integer or floating point."
    'file-exists-p))
 
 ;;;###autoload
-(defun elpa-clone (upstream downstream &optional signature readme)
+(cl-defun elpa-clone (upstream downstream &key sync-method signature readme)
   "Clone ELPA archive.
 
 UPSTREAM is an ELPA URL or local ELPA directory.
 DOWNSTREAM is the download directory.
+
+By default, `elpa-clone' will choose the appropriate SYNC-METHOD for UPSTREAM.
+You can also specify the method.  Available methods are:
+
+  `url'   -- use the \"url\" library.  See Info node `(url)'.
+  `local' -- treat UPSTREAM as a local directory.
+  `nil'   -- choose a method based on UPSTREAM.
+
+Default SYNC-METHOD is `nil'.
 
 When SIGNATURE is nil, download *.sig files only if exists.
 When SIGNATURE is `never', never download *.sig files.

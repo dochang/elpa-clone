@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+  - Change the signature of `elpa-clone`
+
 ## [0.0.4] - 2016-12-22
 
 ### Added
