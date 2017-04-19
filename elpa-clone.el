@@ -4,8 +4,8 @@
 
 ;; Author: ZHANG Weiyi <dochang@gmail.com>
 ;; Version: 0.0.4
-;; Package-Requires: ((cl-lib "0"))
-;; Keywords: elpa, clone, mirror
+;; Package-Requires: ((emacs "24.4") (cl-lib "0"))
+;; Keywords: comm, elpa, clone, mirror
 ;; URL: https://github.com/dochang/elpa-clone
 
 ;; This file is not part of GNU Emacs.
