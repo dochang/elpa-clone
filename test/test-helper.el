@@ -12,7 +12,7 @@
 (defun make-static-handler (source)
   (lambda (request)
     (with-slots (process headers) request
-      (let ((path (substrings (cdr (assoc :GET headers)) 1)))
+      (let ((path (substring (cdr (assoc :GET headers)) 1)))
         (if (ws-in-directory-p source path)
             (if (file-directory-p path)
                 (ws-send-directory-list process
