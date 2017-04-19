@@ -27,7 +27,7 @@
          (server (ws-start (make-static-handler source) 10003)))
     (unwind-protect
         (progn
-          (elpa-clone source target)
+          (elpa-clone "http://127.0.0.1:10003/" target)
           (should (f-file? (f-join target "archive-contents")))
           (should (f-file? (f-join target "a-1.el")))
           (should (f-file? (f-join target "b-2.tar"))))
