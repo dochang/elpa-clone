@@ -27,7 +27,7 @@
          (server (ws-start (make-static-handler source) 10003)))
     (unwind-protect
         (progn
-          (elpa-clone "http://127.0.0.1:10003/" target)
+          (elpa-clone "http://127.0.0.1:10003" target)
           (should (f-file? (f-join target "archive-contents")))
           (should (f-file? (f-join target "a-1.el")))
           (should (f-file? (f-join target "b-2.tar"))))
@@ -90,6 +90,6 @@
     (should-not (f-file? (f-join target "b-2.tar.sig")))))
 
 (ert-deftest test-0009-select-sync-method ()
-  (should (eq (elpa-clone--select-sync-method "http://localhost:10009/") 'url))
+  (should (eq (elpa-clone--select-sync-method "http://localhost:10009") 'url))
   (should (eq (elpa-clone--select-sync-method "file:///path/to/") 'url))
   (should (eq (elpa-clone--select-sync-method "/path/to") 'local)))

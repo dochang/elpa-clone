@@ -198,10 +198,21 @@ The value may be an integer or floating point."
       (mapc cleaner outdate-filenames)
       (mapc downloader new-filenames))))
 
+(defun elpa-clone--url-join (upstream filename)
+  (let* ((url (url-generic-parse-url upstream))
+         (path-and-query (url-path-and-query url))
+         (path (car path-and-query))
+         (query (cdr path-and-query)))
+    (when (or (null path) (equal path ""))
+      (setq path "/"))
+    (setq path (expand-file-name filename path))
+    (setf (url-filename url) (if query (concat path "?" query) path))
+    (url-recreate-url url)))
+
 (defun elpa-clone--remote (upstream downstream signature readme)
   (elpa-clone--internal
    upstream downstream signature readme
-   'concat
+   'elpa-clone--url-join
    'url-copy-file
    'url-insert-file-contents
    'url-http-file-exists-p))
