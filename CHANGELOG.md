@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+  - rsync support
+
 ### Changed
 
   - Change the signature of `elpa-clone`

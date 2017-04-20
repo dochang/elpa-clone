@@ -226,9 +226,16 @@ The value may be an integer or floating point."
    'insert-file-contents
    'file-exists-p))
 
+(defun elpa-clone--rsync (upstream downstream)
+  (call-process "rsync" nil nil nil
+                "--archive" "--compress" "--delete"
+                upstream downstream))
+
 (defun elpa-clone--select-sync-method (upstream)
   (pcase upstream
+    ((pred (string-match-p "\\`rsync://")) 'rsync)
     ((pred (string-match-p "\\`[a-zA-Z][[:alnum:]+.-]*://")) 'url)
+    ((pred (string-match-p "\\`[[:alnum:].-]+::?[^:]*")) 'rsync)
     (_ 'local)))
 
 ;;;###autoload
@@ -241,6 +248,7 @@ DOWNSTREAM is the download directory.
 By default, `elpa-clone' will choose the appropriate SYNC-METHOD for UPSTREAM.
 You can also specify the method.  Available methods are:
 
+  `rsync' -- use rsync
   `url'   -- use the \"url\" library.  See Info node `(url)'.
   `local' -- treat UPSTREAM as a local directory.
   `nil'   -- choose a method based on UPSTREAM.
@@ -274,6 +282,7 @@ When README is any other value, always download readme files."
     (unless sync-method
       (setq sync-method (elpa-clone--select-sync-method upstream)))
     (pcase sync-method
+      (`rsync (elpa-clone--rsync upstream downstream))
       (`url (elpa-clone--remote upstream downstream signature readme))
       (`local (elpa-clone--local upstream downstream signature readme))
       (_ (error "Unknown sync method %s" sync-method)))))

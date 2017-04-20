@@ -15,6 +15,7 @@ addons:
   apt:
     packages:
       - curl
+      - rsync
 
 before_install:
   - curl -fsSkL https://github.com/rejeep/evm/raw/master/go | bash
