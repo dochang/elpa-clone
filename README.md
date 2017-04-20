@@ -6,20 +6,13 @@
 
 [![Build Status](https://travis-ci.org/dochang/elpa-clone.svg?branch=master)](https://travis-ci.org/dochang/elpa-clone)
 
-Mirror an ELPA archive into a directory. Note that GNU ELPA, MELPA and
-MELPA Stable can more efficiently be cloned using `rsync`:
-
-  - mkdir -p /var/elpa-packages/{gnu,melpa,melpa-stable}
-  - /usr/bin/rsync -avz --delete --progress elpa.gnu.org::elpa/ /var/elpa-packages/gnu
-  - /usr/bin/rsync -avz --delete --progress rsync://melpa.org/packages/ /var/elpa-packages/melpa
-  - /usr/bin/rsync -avz --delete --progress rsync://stable.melpa.org/packages/ /var/elpa-packages/melpa-stable
-
-Please prefer `rsync` to this package for cloning those repositories.
+Mirror an ELPA archive into a directory.
 
 ## Prerequisites
 
   - Emacs 24.4 or later
   - cl-lib
+  - rsync (optional, but recommended)
 
 ## Installation
 
@@ -42,6 +35,34 @@ To clone an ELPA archive `http://host/elpa` into `/path/to/elpa`, invoke
 
 You can customize download interval via `elpa-clone-download-interval`.  But
 note that the *real* interval is `(max elpa-clone-download-interval 5)`.
+
+### Prefer rsync
+
+Some ELPA archives can more efficiently be cloned using rsync:
+
+        (elpa-clone "elpa.gnu.org::elpa/" "/path/to/elpa")
+        (elpa-clone "rsync://melpa.org/packages/" "/path/to/elpa")
+        (elpa-clone "rsync://stable.melpa.org/packages/" "/path/to/elpa")
+
+Currently, only the following archives support rsync:
+
+  - GNU ELPA
+  - MELPA
+  - MELPA Stable
+
+By default, `elpa-clone` selects the appropriate sync method based on the
+upstream url, but you can also specify the method you want:
+
+        (elpa-clone "foo/" "bar/" :sync-method 'rsync)
+        (elpa-clone "foo::bar/" "/path/to/elpa" :sync-method 'local)
+        (elpa-clone "rsync://foo/bar/" "/path/to/elpa" :sync-method 'url)
+
+Available methods are:
+
+  - `rsync`: use rsync (recommended)
+  - `url`: use the `url` library
+  - `local`: treat upstream as a local directory
+  - `nil`: choose a method based on upstream
 
 ## Note
 
