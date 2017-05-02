@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+  - Support user in rsync url
+
 ## [0.0.5] - 2017-04-23
 
 ### Added

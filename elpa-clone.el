@@ -264,7 +264,7 @@ The value may be an integer or floating point."
   (pcase upstream
     ((pred (string-match-p "\\`rsync://")) 'rsync)
     ((pred (string-match-p "\\`[a-zA-Z][[:alnum:]+.-]*://")) 'url)
-    ((pred (string-match-p "\\`[[:alnum:].-]+::?[^:]*")) 'rsync)
+    ((pred (string-match-p "\\`[[:alnum:]@.-]+::?[^:]*")) 'rsync)
     (_ 'local)))
 
 ;;;###autoload
