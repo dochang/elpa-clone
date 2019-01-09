@@ -5,5 +5,5 @@
 
 (development
  (depends-on "f")
- (depends-on "web-server")
+ (depends-on "simple-httpd")
  (depends-on "ert-runner"))

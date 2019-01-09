@@ -5,6 +5,7 @@
 ### Changed
 
   - Make ERT easy to debug
+  - Replace http server for test
 
 ## [0.0.6] - 2017-05-02
 

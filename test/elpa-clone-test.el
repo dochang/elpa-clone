@@ -1,5 +1,5 @@
 (require 'f)
-(require 'web-server)
+(require 'simple-httpd)
 
 (ert-deftest test-0001-local-clone ()
   (let* ((fixture-path (f-join fixture-root "0001-local-clone"))
@@ -24,14 +24,15 @@
   (let* ((fixture-path (f-join fixture-root "0003-http-clone"))
          (source (f-join fixture-path "source"))
          (target (f-join fixture-path "target"))
-         (server (ws-start (make-static-handler source) 10003)))
+         (httpd-port 10003))
+    (httpd-serve-directory source)
     (unwind-protect
         (progn
           (elpa-clone "http://127.0.0.1:10003" target)
           (should (f-file? (f-join target "archive-contents")))
           (should (f-file? (f-join target "a-1.el")))
           (should (f-file? (f-join target "b-2.tar"))))
-      (ws-stop server))))
+      (httpd-stop))))
 
 (ert-deftest test-0004-signature ()
   (let* ((fixture-path (f-join fixture-root "0004-signature"))
