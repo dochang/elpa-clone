@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+  - Test for Emacs 26.2 & 26.3
+
 ### Changed
 
   - Migrate from Travis to Drone
