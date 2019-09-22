@@ -30,6 +30,9 @@ local test_step(emacs_ver) = {
       path: '/home/linuxbrew/.linuxbrew',
     },
   ],
+  'environment': {
+    TARGET_ROOT: '/tmp/elpa-clone/emacs%s' % emacs_ver,
+  },
   depends_on: [
     'install ci deps',
   ],

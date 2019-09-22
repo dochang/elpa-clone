@@ -5,6 +5,7 @@
 ### Added
 
   - Test for Emacs 26.2 & 26.3
+  - Specify target directory by `TARGET_ROOT`
 
 ### Changed
 
