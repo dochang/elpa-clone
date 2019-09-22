@@ -13,13 +13,13 @@
   "Path to fixture root directory.")
 
 (defvar source-root
-  fixture-root
+  (f-join fixture-root "source")
   "Path to source root directory.")
 
 (defvar target-root
   (let ((env (getenv "TARGET_ROOT")))
     (if (or (null env)
             (string= env ""))
-        fixture-root
+        (f-join fixture-root "target")
       env))
   "Path to target root directory.")
