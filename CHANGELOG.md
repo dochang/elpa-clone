@@ -5,6 +5,7 @@
 ### Removed
 
   - Drop test cases for non-latest images of each major version
+  - Drop Linuxbrew use in CI
 
 ## [0.0.9] - 2019-10-06
 
