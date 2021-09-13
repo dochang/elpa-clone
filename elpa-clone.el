@@ -255,7 +255,7 @@ or not."
         (write-file (expand-file-name contents-file downstream))))
     (let* ((upstream-filenames (mapcar 'elpa-clone--package-filename pkgs))
            (downstream-filenames (directory-files downstream nil
-                                                  "\\.\\(el\\|tar\\)$"))
+                                                  "\\.\\(el\\|tar\\)\\'"))
            (outdate-filenames (cl-set-difference downstream-filenames
                                                  upstream-filenames
                                                  :test 'string=))
