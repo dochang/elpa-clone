@@ -1,4 +1,4 @@
-test/fixtures/*/target/
+test/fixtures/**/target/
 
 # Created by https://www.gitignore.io/api/elisp,emacs
 
