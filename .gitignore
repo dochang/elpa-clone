@@ -53,3 +53,7 @@ flycheck_*.el
 
 # projectiles files
 .projectile
+
+# Added automatically by ‘eldev init’.
+/.eldev
+/Eldev-local
