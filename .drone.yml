@@ -1,6 +1,27 @@
 ---
 {
    "kind": "pipeline",
+   "name": "Mega-Linter",
+   "steps": [
+      {
+         "environment": {
+            "DEFAULT_WORKSPACE": "/drone/src"
+         },
+         "image": "nvuillam/mega-linter:v4",
+         "name": "Lint"
+      }
+   ],
+   "type": "docker",
+   "workspace": {
+      "path": "/drone/src"
+   }
+}
+---
+{
+   "depends_on": [
+      "Mega-Linter"
+   ],
+   "kind": "pipeline",
    "name": "test-emacs24",
    "steps": [
       {
@@ -20,6 +41,9 @@
 }
 ---
 {
+   "depends_on": [
+      "Mega-Linter"
+   ],
    "kind": "pipeline",
    "name": "test-emacs25",
    "steps": [
@@ -40,6 +64,9 @@
 }
 ---
 {
+   "depends_on": [
+      "Mega-Linter"
+   ],
    "kind": "pipeline",
    "name": "test-emacs26",
    "steps": [
