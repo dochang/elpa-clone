@@ -86,3 +86,11 @@
 [0.0.3]: https://github.com/dochang/elpa-clone/compare/0.0.2...0.0.3
 [0.0.2]: https://github.com/dochang/elpa-clone/compare/0.0.1...0.0.2
 [0.0.1]: https://github.com/dochang/elpa-clone/commits/0.0.1
+
+<!-- markdownlint-configure-file
+{
+  "MD024": {
+    "siblings_only": true
+  }
+}
+-->
