@@ -15,9 +15,9 @@ Mirror an ELPA archive into a directory.
 
 ## Prerequisites
 
-  - Emacs 24.4 or later
-  - cl-lib
-  - rsync (optional, but recommended)
+- Emacs 24.4 or later
+- cl-lib
+- rsync (optional, but recommended)
 
 ## Installation
 
@@ -51,9 +51,9 @@ Some ELPA archives can more efficiently be cloned using rsync:
 
 Currently, only the following archives support rsync:
 
-  - GNU ELPA
-  - MELPA
-  - MELPA Stable
+- GNU ELPA
+- MELPA
+- MELPA Stable
 
 By default, `elpa-clone` selects the appropriate sync method based on the
 upstream url, but you can also specify the method you want:
@@ -64,10 +64,10 @@ upstream url, but you can also specify the method you want:
 
 Available methods are:
 
-  - `rsync`: use rsync (recommended)
-  - `url`: use the `url` library
-  - `local`: treat upstream as a local directory
-  - `nil`: choose a method based on upstream
+- `rsync`: use rsync (recommended)
+- `url`: use the `url` library
+- `local`: treat upstream as a local directory
+- `nil`: choose a method based on upstream
 
 ## Note
 
