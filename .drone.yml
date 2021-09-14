@@ -85,4 +85,27 @@
    ],
    "type": "docker"
 }
+---
+{
+   "depends_on": [
+      "Mega-Linter"
+   ],
+   "kind": "pipeline",
+   "name": "test-emacs27",
+   "steps": [
+      {
+         "commands": [
+            "apt-get update && apt-get --yes install curl rsync",
+            "eldev lint",
+            "eldev test"
+         ],
+         "environment": {
+            "TARGET_ROOT": "/tmp/elpa-clone/emacs27"
+         },
+         "image": "silex/emacs:27-ci-eldev",
+         "name": "test"
+      }
+   ],
+   "type": "docker"
+}
 ...

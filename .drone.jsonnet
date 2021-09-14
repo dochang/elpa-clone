@@ -44,5 +44,5 @@ local generate_pipeline(args) = function(emacs_ver) {
       'apt-get update && apt-get --yes install curl rsync',
     ],
   }),
-  ['24', '25', '26'],
+  ['24', '25', '26', '27'],
 )
