@@ -4,7 +4,7 @@
 
 ;; Author: ZHANG Weiyi <dochang@gmail.com>
 ;; Version: 0.0.9
-;; Package-Requires: ((emacs "24.4") (cl-lib "0"))
+;; Package-Requires: ((emacs "24.4"))
 ;; Keywords: comm, elpa, clone, mirror
 ;; URL: https://github.com/dochang/elpa-clone
 
@@ -123,6 +123,7 @@ The value may be an integer or floating point."
   :group 'elpa-clone)
 
 (defun elpa-clone--read-archive-contents (buffer)
+  "Read archive contents in BUFFER."
   (let ((contents (read buffer)))
     (when (> (car contents) package-archive-version)
       (error "Package archive version %d is higher than %d"
@@ -130,6 +131,7 @@ The value may be an integer or floating point."
     (cdr contents)))
 
 (defun elpa-clone--package-filename (pkg)
+  "Return the filename of package PKG."
   (let* ((pkg-desc
           (package-desc-create
            :name (car pkg)
@@ -139,6 +141,7 @@ The value may be an integer or floating point."
             (package-desc-suffix pkg-desc))))
 
 (defun elpa-clone--split-filename (filename)
+  "Split FILENAME."
   (let* ((basename (file-name-base filename))
          (len (length basename))
          (pos (- len 1))
@@ -156,6 +159,7 @@ The value may be an integer or floating point."
       (list basename))))
 
 (defun elpa-clone--cleaner (downstream)
+  "Return a function that deletes ELPA files in DOWNSTREAM."
   (lambda (filename)
     (let* ((pkgname (car (elpa-clone--split-filename filename)))
            (readme-filename (concat pkgname "-readme.txt"))
@@ -168,9 +172,24 @@ The value may be an integer or floating point."
         (delete-file sig-pathname)))
     (delete-file (expand-file-name filename downstream))))
 
-(defun elpa-clone--downloader (upstream downstream signaturep readme
+(defun elpa-clone--downloader (upstream
+                               downstream
+                               signaturep
+                               readme
                                upstream-join upstream-copy-file
                                upstream-file-exists-p)
+  "Return a function that downloads readme file from UPSTREAM to DOWNSTREAM.
+
+If SIGNATUREP is true, also downloads signature file.
+
+README is the readme file to be downloaded.
+
+UPSTREAM-JOIN is a function joins UPSTREAM url and filename.
+
+UPSTREAM-COPY-FILE is a function copies file from UPSTREAM to DOWNSTREAM.
+
+UPSTREAM-FILE-EXISTS-P is a function checks that whether a file is in UPSTREAM
+or not."
   (lambda (filename)
     (sleep-for (max elpa-clone-download-interval 5))
     (let ((source (funcall upstream-join upstream filename))
@@ -194,10 +213,28 @@ The value may be an integer or floating point."
                      source-sig target-sig 'ok-if-already-exists)))
         (funcall upstream-copy-file source target)))))
 
-(defun elpa-clone--internal (upstream downstream signature readme
-                             upstream-join upstream-copy-file
+(defun elpa-clone--internal (upstream
+                             downstream
+                             signature
+                             readme
+                             upstream-join
+                             upstream-copy-file
                              upstream-insert-file-contents
                              upstream-file-exists-p)
+  "Downloads readme file and signature file from UPSTREAM to DOWNSTREAM.
+
+SIGNATURE is the signature file to be downloaded.
+
+README is the readme file to be downloaded.
+
+UPSTREAM-JOIN is a function joins UPSTREAM url and filename.
+
+UPSTREAM-COPY-FILE is a function copies a file from UPSTREAM to DOWNSTREAM.
+
+UPSTREAM-INSERT-FILE-CONTENTS is a function that
+
+UPSTREAM-FILE-EXISTS-P is a function checks that whether a file is in UPSTREAM
+or not."
   (let* (pkgs signaturep)
     (with-temp-buffer
       (let* ((contents-file "archive-contents")
@@ -218,7 +255,7 @@ The value may be an integer or floating point."
         (write-file (expand-file-name contents-file downstream))))
     (let* ((upstream-filenames (mapcar 'elpa-clone--package-filename pkgs))
            (downstream-filenames (directory-files downstream nil
-                                                  "\\.\\(el\\|tar\\)$"))
+                                                  "\\.\\(el\\|tar\\)\\'"))
            (outdate-filenames (cl-set-difference downstream-filenames
                                                  upstream-filenames
                                                  :test 'string=))
@@ -233,6 +270,7 @@ The value may be an integer or floating point."
       (mapc downloader new-filenames))))
 
 (defun elpa-clone--url-join (upstream filename)
+  "Join UPSTREAM url and FILENAME."
   (let* ((url (url-generic-parse-url upstream))
          (path-and-query (url-path-and-query url))
          (path (car path-and-query))
@@ -244,6 +282,11 @@ The value may be an integer or floating point."
     (url-recreate-url url)))
 
 (defun elpa-clone--remote (upstream downstream signature readme)
+  "Downloads signature and readme from a remote UPSTREAM to a local DOWNSTREAM.
+
+SIGNATURE is the signature file.
+
+README is the readme file."
   (elpa-clone--internal
    upstream downstream signature readme
    'elpa-clone--url-join
@@ -252,6 +295,11 @@ The value may be an integer or floating point."
    'url-http-file-exists-p))
 
 (defun elpa-clone--local (upstream downstream signature readme)
+  "Downloads signature and readme from a local UPSTREAM to a local DOWNSTREAM.
+
+SIGNATURE is the signature file.
+
+README is the readme file."
   (elpa-clone--internal
    upstream downstream signature readme
    (lambda (upstream filename)
@@ -261,11 +309,13 @@ The value may be an integer or floating point."
    'file-exists-p))
 
 (defun elpa-clone--rsync (upstream downstream)
+  "Call rsync for UPSTREAM and DOWNSTREAM."
   (call-process "rsync" nil nil nil
                 "--archive" "--compress" "--delete"
                 upstream downstream))
 
 (defun elpa-clone--select-sync-method (upstream)
+  "Choose sync method based on UPSTREAM."
   (pcase upstream
     ((pred (string-match-p "\\`rsync://")) 'rsync)
     ((pred (string-match-p "\\`[a-zA-Z][[:alnum:]+.-]*://")) 'url)
@@ -285,9 +335,9 @@ You can also specify the method.  Available methods are:
   `rsync' -- use rsync
   `url'   -- use the \"url\" library.  See Info node `(url)'.
   `local' -- treat UPSTREAM as a local directory.
-  `nil'   -- choose a method based on UPSTREAM.
+  nil     -- choose a method based on UPSTREAM.
 
-Default SYNC-METHOD is `nil'.
+Default SYNC-METHOD is nil.
 
 When SIGNATURE is nil, download *.sig files only if exists.
 When SIGNATURE is `never', never download *.sig files.

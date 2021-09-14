@@ -6,13 +6,13 @@
       {
          "commands": [
             "apt-get update && apt-get --yes install curl rsync",
-            "cask install",
-            "cask exec ert-runner"
+            "eldev lint",
+            "eldev test"
          ],
          "environment": {
             "TARGET_ROOT": "/tmp/elpa-clone/emacs24"
          },
-         "image": "silex/emacs:24-ci-cask",
+         "image": "silex/emacs:24-ci-eldev",
          "name": "test"
       }
    ],
@@ -26,13 +26,13 @@
       {
          "commands": [
             "apt-get update && apt-get --yes install curl rsync",
-            "cask install",
-            "cask exec ert-runner"
+            "eldev lint",
+            "eldev test"
          ],
          "environment": {
             "TARGET_ROOT": "/tmp/elpa-clone/emacs25"
          },
-         "image": "silex/emacs:25-ci-cask",
+         "image": "silex/emacs:25-ci-eldev",
          "name": "test"
       }
    ],
@@ -46,13 +46,13 @@
       {
          "commands": [
             "apt-get update && apt-get --yes install curl rsync",
-            "cask install",
-            "cask exec ert-runner"
+            "eldev lint",
+            "eldev test"
          ],
          "environment": {
             "TARGET_ROOT": "/tmp/elpa-clone/emacs26"
          },
-         "image": "silex/emacs:26-ci-cask",
+         "image": "silex/emacs:26-ci-eldev",
          "name": "test"
       }
    ],

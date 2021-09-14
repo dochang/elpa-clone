@@ -1,5 +1,6 @@
 (require 'f)
 (require 'simple-httpd)
+(require 'elpa-clone)
 
 (ert-deftest test-0001-local-clone ()
   (let* ((fixture-name "0001-local-clone")

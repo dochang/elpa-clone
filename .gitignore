@@ -1,4 +1,4 @@
-test/fixtures/*/target/
+test/fixtures/**/target/
 
 # Created by https://www.gitignore.io/api/elisp,emacs
 
@@ -53,3 +53,7 @@ flycheck_*.el
 
 # projectiles files
 .projectile
+
+# Added automatically by ‘eldev init’.
+/.eldev
+/Eldev-local

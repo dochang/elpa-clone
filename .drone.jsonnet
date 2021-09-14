@@ -5,10 +5,10 @@ local generate_pipeline(args) = function(emacs_ver) {
   steps: [
     {
       name: 'test',
-      image: 'silex/emacs:%s-ci-cask' % emacs_ver,
+      image: 'silex/emacs:%s-ci-eldev' % emacs_ver,
       commands: args.ci_deps_cmds + [
-        'cask install',
-        'cask exec ert-runner',
+        'eldev lint',
+        'eldev test',
       ],
       environment: {
         TARGET_ROOT: '/tmp/elpa-clone/emacs%s' % emacs_ver,
