@@ -4,20 +4,28 @@
 *Version:* 0.0.9<br>
 *URL:* [https://github.com/dochang/elpa-clone](https://github.com/dochang/elpa-clone)<br>
 
+<!-- markdown-link-check-disable -->
 [![MELPA](http://melpa.org/packages/elpa-clone-badge.svg)](http://melpa.org/#/elpa-clone)
 [![MELPA Stable](http://stable.melpa.org/packages/elpa-clone-badge.svg)](http://stable.melpa.org/#/elpa-clone)
 [![Build Status](https://cloud.drone.io/api/badges/dochang/elpa-clone/status.svg)](https://cloud.drone.io/dochang/elpa-clone)
 [![Build Status](https://travis-ci.org/dochang/elpa-clone.svg?branch=master)](https://travis-ci.org/dochang/elpa-clone)
 [![GitHub](https://img.shields.io/github/license/dochang/elpa-clone)](https://github.com/dochang/elpa-clone/blob/master/LICENSE)
 [![Say Thanks!](https://img.shields.io/badge/say-thanks-green)](https://saythanks.io/to/dochang)
+<!--
+See the following issues for details.
+
+<https://github.com/BlitzKraft/saythanks.io/issues/60>
+<https://github.com/BlitzKraft/saythanks.io/issues/103>
+-->
+<!-- markdown-link-check-enable -->
 
 Mirror an ELPA archive into a directory.
 
 ## Prerequisites
 
-  - Emacs 24.4 or later
-  - cl-lib
-  - rsync (optional, but recommended)
+- Emacs 24.4 or later
+- cl-lib
+- rsync (optional, but recommended)
 
 ## Installation
 
@@ -51,9 +59,9 @@ Some ELPA archives can more efficiently be cloned using rsync:
 
 Currently, only the following archives support rsync:
 
-  - GNU ELPA
-  - MELPA
-  - MELPA Stable
+- GNU ELPA
+- MELPA
+- MELPA Stable
 
 By default, `elpa-clone` selects the appropriate sync method based on the
 upstream url, but you can also specify the method you want:
@@ -64,10 +72,10 @@ upstream url, but you can also specify the method you want:
 
 Available methods are:
 
-  - `rsync`: use rsync (recommended)
-  - `url`: use the `url` library
-  - `local`: treat upstream as a local directory
-  - `nil`: choose a method based on upstream
+- `rsync`: use rsync (recommended)
+- `url`: use the `url` library
+- `local`: treat upstream as a local directory
+- `nil`: choose a method based on upstream
 
 ## Note
 
