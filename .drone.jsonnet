@@ -1,22 +1,15 @@
-local generate_pipeline(args) = function(emacs_ver) {
-  kind: 'pipeline',
-  type: 'docker',
+local test_step(ci_deps_cmds) = function(emacs_ver) {
   name: 'test-emacs%s' % emacs_ver,
-  depends_on: [
-    'Mega-Linter',
+  image: 'silex/emacs:%s-ci-eldev' % emacs_ver,
+  commands: ci_deps_cmds + [
+    'eldev lint',
+    'eldev test',
   ],
-  steps: [
-    {
-      name: 'test',
-      image: 'silex/emacs:%s-ci-eldev' % emacs_ver,
-      commands: args.ci_deps_cmds + [
-        'eldev lint',
-        'eldev test',
-      ],
-      environment: {
-        TARGET_ROOT: '/tmp/elpa-clone/emacs%s' % emacs_ver,
-      },
-    },
+  environment: {
+    TARGET_ROOT: '/tmp/elpa-clone/emacs%s' % emacs_ver,
+  },
+  depends_on: [
+    'no-op',
   ],
 };
 
@@ -38,11 +31,18 @@ local generate_pipeline(args) = function(emacs_ver) {
       },
     ],
   },
-] + std.map(
-  generate_pipeline({
-    ci_deps_cmds: [
+  {
+    kind: 'pipeline',
+    type: 'docker',
+    name: 'default',
+    steps: [
+      {
+        // For parallel steps
+        name: 'no-op',
+        image: 'hello-world:linux',
+      },
+    ] + std.map(test_step([
       'apt-get update && apt-get --yes install curl rsync',
-    ],
-  }),
-  ['24', '25', '26', '27'],
-)
+    ]), ['24', '25', '26', '27']),
+  },
+]
