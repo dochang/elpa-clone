@@ -67,7 +67,6 @@ jobs:
 
   test:
     needs:
-      - Mega-Linter
       - guix-pack
     runs-on: ubuntu-latest
     strategy:
