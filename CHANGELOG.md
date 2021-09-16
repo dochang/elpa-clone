@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.1.1] - 2021-09-16
+
 ### Changed
 
 - Move Drone CI test steps into one pipeline
@@ -91,7 +93,8 @@
 <!-- Skip checking the links status because the CHANGELOG is always updated
 before the tag is created -->
 
-[Unreleased]: https://github.com/dochang/elpa-clone/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/dochang/elpa-clone/compare/0.1.1...HEAD
+[0.1.1]: https://github.com/dochang/elpa-clone/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/dochang/elpa-clone/compare/0.0.9...0.1.0
 [0.0.9]: https://github.com/dochang/elpa-clone/compare/0.0.8...0.0.9
 [0.0.8]: https://github.com/dochang/elpa-clone/compare/0.0.7...0.0.8
