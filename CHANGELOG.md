@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2021-12-05
+
 ### Changed
 
 - Migrate MegaLinter to v5
@@ -97,7 +99,8 @@
 <!-- Skip checking the links status because the CHANGELOG is always updated
 before the tag is created -->
 
-[Unreleased]: https://github.com/dochang/elpa-clone/compare/0.1.1...HEAD
+[Unreleased]: https://github.com/dochang/elpa-clone/compare/0.2.0...HEAD
+[0.2.0]: https://github.com/dochang/elpa-clone/compare/0.1.1...0.2.0
 [0.1.1]: https://github.com/dochang/elpa-clone/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/dochang/elpa-clone/compare/0.0.9...0.1.0
 [0.0.9]: https://github.com/dochang/elpa-clone/compare/0.0.8...0.0.9
