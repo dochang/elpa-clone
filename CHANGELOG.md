@@ -9,6 +9,7 @@
 ### Changed
 
 - Upgrade to MegaLinter v6
+- Upgrade Github actions
 
 ## [0.2.0] - 2021-12-05
 
