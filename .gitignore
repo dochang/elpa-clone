@@ -57,3 +57,5 @@ flycheck_*.el
 # Added automatically by ‘eldev init’.
 /.eldev
 /Eldev-local
+
+megalinter-reports/
