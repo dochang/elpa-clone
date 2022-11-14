@@ -83,6 +83,8 @@ jobs:
           - 26.3
           - 27.1
           - 27.2
+          - 28.1
+          - 28.2
     steps:
       - uses: actions/checkout@v3
 
@@ -112,4 +114,4 @@ jobs:
           eldev lint
           eldev test
         env:
-          TARGET_ROOT: '/tmp/elpa-clone/emacs${{ matrix.emacs-version }}'
+          TARGET_ROOT: "/tmp/elpa-clone/emacs${{ matrix.emacs-version }}"
