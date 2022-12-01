@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2022-12-01
+
 ### Added
 
 - Test for Emacs 28.1 & 28.2
@@ -108,7 +110,8 @@
 <!-- Skip checking the links status because the CHANGELOG is always updated
 before the tag is created -->
 
-[Unreleased]: https://github.com/dochang/elpa-clone/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/dochang/elpa-clone/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/dochang/elpa-clone/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/dochang/elpa-clone/compare/0.1.1...0.2.0
 [0.1.1]: https://github.com/dochang/elpa-clone/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/dochang/elpa-clone/compare/0.0.9...0.1.0
