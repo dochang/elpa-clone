@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Removed
+
+- Travis CI configuration
+
 ## [0.3.0] - 2022-12-01
 
 ### Added
