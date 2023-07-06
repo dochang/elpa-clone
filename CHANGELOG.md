@@ -5,6 +5,7 @@
 ### Removed
 
 - Travis CI configuration
+- Drone CI configuration
 
 ## [0.3.0] - 2022-12-01
 
