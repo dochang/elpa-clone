@@ -31,6 +31,11 @@ jobs:
             bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           environment:
             NONINTERACTIVE: 1
+      - restore_cache:
+          keys:
+            - &eldev-cache-key v1-eldev-<< parameters.emacs-version >>-{{ checksum "Eldev" }}
+            - v1-eldev-<< parameters.emacs-version >>-
+            - v1-eldev-
       - run:
           name: Test
           command: |
@@ -41,6 +46,10 @@ jobs:
           environment:
             TARGET_ROOT: /tmp/elpa-clone/emacs<< parameters.emacs-version >>
             HOMEBREW_BUNDLE_NO_LOCK: 1
+      - save_cache:
+          key: *eldev-cache-key
+          paths:
+            - "~/.cache/eldev"
 
 workflows:
   CI:
