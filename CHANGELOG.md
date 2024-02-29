@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Test for Emacs 29.2
+
 ## [0.4.0] - 2023-08-08
 
 ### Added
