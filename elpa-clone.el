@@ -1,6 +1,6 @@
 ;;; elpa-clone.el --- Clone ELPA archive
 
-;; Copyright (C) 2016, 2019, 2021 ZHANG Weiyi
+;; Copyright (C) 2016, 2017, 2019, 2021-2023 ZHANG Weiyi
 
 ;; Author: ZHANG Weiyi <dochang@gmail.com>
 ;; Version: 0.4.0
