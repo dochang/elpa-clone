@@ -6,6 +6,10 @@
 
 - Test for Emacs 29.2..29.4
 
+### Changed
+
+- Upgrade to MegaLinter v8
+
 ## [0.4.0] - 2023-08-08
 
 ### Added
