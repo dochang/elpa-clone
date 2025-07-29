@@ -10,6 +10,10 @@
 
 - Upgrade to MegaLinter v8
 
+### Removed
+
+- Emacs 24 support
+
 ## [0.4.0] - 2023-08-08
 
 ### Added

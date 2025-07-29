@@ -4,7 +4,7 @@
 
 ;; Author: ZHANG Weiyi <dochang@gmail.com>
 ;; Version: 0.4.0
-;; Package-Requires: ((emacs "24.4"))
+;; Package-Requires: ((emacs "25.1"))
 ;; Keywords: comm, elpa, clone, mirror
 ;; URL: https://github.com/dochang/elpa-clone
 
@@ -46,7 +46,7 @@
 
 ;; Prerequisites:
 ;;
-;; - Emacs 24.4 or later
+;; - Emacs 25 or later
 ;; - cl-lib
 ;; - rsync (optional, but recommended)
 
