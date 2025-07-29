@@ -47,7 +47,6 @@
 ;; Prerequisites:
 ;;
 ;; - Emacs 25 or later
-;; - cl-lib
 ;; - rsync (optional, but recommended)
 
 ;; Installation:
