@@ -59,3 +59,5 @@ flycheck_*.el
 /Eldev-local
 
 megalinter-reports/
+
+*-autoloads.el
