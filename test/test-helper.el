@@ -23,3 +23,5 @@
         (f-join fixture-root "target")
       env))
   "Path to target root directory.")
+
+(provide 'test-helper)

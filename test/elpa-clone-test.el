@@ -2,6 +2,8 @@
 (require 'simple-httpd)
 (require 'elpa-clone)
 
+(require 'test-helper)
+
 (ert-deftest test-0001-local-clone ()
   (let* ((fixture-name "0001-local-clone")
          (source (f-join source-root fixture-name))

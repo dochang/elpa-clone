@@ -11,3 +11,5 @@
  'test
  'f
  'simple-httpd)
+
+(eldev-add-loading-roots 'test "test")
