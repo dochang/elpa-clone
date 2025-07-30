@@ -61,3 +61,4 @@ flycheck_*.el
 megalinter-reports/
 
 *-autoloads.el
+coverage.json

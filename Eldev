@@ -6,6 +6,7 @@
 (eldev-use-package-archive 'melpa)
 
 (eldev-use-plugin 'autoloads)
+(eldev-use-plugin 'undercover)
 
 (eldev-add-extra-dependencies
  'test

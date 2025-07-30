@@ -109,8 +109,15 @@ jobs:
       - name: Test
         run: |
           brew bundle install
-          eldev lint
-          eldev test
+          make lint
+          make test
         env:
           TARGET_ROOT: "/tmp/elpa-clone/emacs${{ matrix.emacs-version }}"
           HOMEBREW_BUNDLE_NO_LOCK: 1
+
+      - name: Upload Coverage Report
+        uses: codecov/codecov-action@v5
+        with:
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
