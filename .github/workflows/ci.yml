@@ -109,8 +109,8 @@ jobs:
       - name: Test
         run: |
           brew bundle install
-          eldev lint
-          eldev test
+          make lint
+          make test
         env:
           TARGET_ROOT: "/tmp/elpa-clone/emacs${{ matrix.emacs-version }}"
           HOMEBREW_BUNDLE_NO_LOCK: 1

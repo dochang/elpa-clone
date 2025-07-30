@@ -57,8 +57,8 @@ jobs:
           command: |
             eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
             brew bundle install
-            eldev lint
-            eldev test
+            make lint
+            make test
           environment:
             TARGET_ROOT: /tmp/elpa-clone/emacs<< parameters.emacs-version >>
             HOMEBREW_BUNDLE_NO_LOCK: 1
